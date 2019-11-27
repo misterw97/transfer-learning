@@ -24,8 +24,12 @@ x = np.expand_dims(x, axis=0)
 x = preprocess_input(x)
 print(f"Image {img_name} loaded!")
 
-prediction = model.predict(x)
-print("Predictions:", prediction)
+predictions = model.predict(x)[0]
+print("Predictions:", dict(zip(classes, predictions)))
 
+predicted_index = np.argmax(predictions)
+predicted_class = classes[predicted_index]
+predicted_confd = predictions[predicted_index]
+predicted_verb = "is" if predicted_confd > 0.999 else "might be"
 print()
-print("This is a", classes[np.argmax(prediction)])
+print(f"This {predicted_verb} a {predicted_class}")
